@@ -24,11 +24,11 @@ void setup () {
 
 void loop(){
 
-  int sensorValue = analogRead(TURBIDITY); // read the input on analog pin 0:
+  int sensorValue = analogRead(TURBIDITY); 
 
-  float voltage = sensorValue * (5.0 / 1024.0); // Convert the analog reading (0-1023) to a voltage (0-5V)
+  float voltage = sensorValue * (5.0 / 1024.0); 
 
-  Serial.println(voltage); // print out the value you read:
+  Serial.println(voltage); 
 
   delay(500);
   DateTime now = RTC.now();
