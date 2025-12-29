@@ -21,9 +21,13 @@ void setup() {
 
 void loop() {
     DataPacket packet;
-    if(sx1262.receiveData(packet)) {
-        Serial.print("Received packet: ");
-        Serial.println(packet.counter);
-    }
+    packet.id = 0x01;
+    packet.counter = cnt++;
+
+    sx1262.sendData(packet);
+
+    Serial.print("Sent packet: ");
+    Serial.println(packet.counter);
+
     delay(1000);
 }
