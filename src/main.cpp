@@ -1,7 +1,6 @@
 #include <Wire.h>
 #include <RTClib.h>
 #include "RTC.h"
-
 #define TURBIDITY 34
 
 void setup () {
@@ -12,11 +11,10 @@ void setup () {
 }
 
 void loop(){
+
   RTC_Time now;
   getTimestamp(&now); 
-  Serial.printf("%04d/%02d/%02d %02d:%02d:%02d\n",
-    now.year, now.month, now.day,
-    now.hour, now.minute, now.second);
+  Serial.printf(getTimestampToString());
 
   int sensorValue = analogRead(TURBIDITY); 
 
@@ -25,5 +23,4 @@ void loop(){
   Serial.println(voltage);
 
   delay(500);
-
 } 
