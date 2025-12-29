@@ -15,7 +15,8 @@ typedef struct{
     int second;
 } RTC_Time;
 
-void timestamp(RTC_Time *now);
+void getTimestamp(RTC_Time *now);
+String getTimestampToString();
 void rtc_init();
 
 #endif

@@ -10,7 +10,7 @@ void rtc_init(){
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 }
 
-void timestamp(RTC_Time* now){
+void getTimestamp(RTC_Time* now){
     DateTime current = rtc.now();
 
     now -> year = current.year();
@@ -19,4 +19,13 @@ void timestamp(RTC_Time* now){
     now -> hour = current.hour();
     now -> minute = current.minute();
     now -> second = current.second();
+}
+
+String getTimestampToString(){
+    DateTime current = rtc.now();
+    char buffer[20];
+    sprintf(buffer, "%04d/%02d/%02d %02d:%02d:%02d",
+        current.year(), current.month(), current.day(),
+        current.hour(), current.minute(), current.second());
+    return String(buffer);
 }
