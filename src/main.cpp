@@ -1,56 +1,29 @@
 #include <Wire.h>
-
 #include <RTClib.h>
+#include "RTC.h"
 
-RTC_DS1307 RTC;
-
-#define SDA_PATH 21
-#define SCL_PATH 22
-
-char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+#define TURBIDITY 34
 
 void setup () {
 
   Serial.begin(115200);
-
-  Wire.begin(SDA_PATH, SCL_PATH);
-
-  RTC.begin();
-
-  RTC.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  rtc_init();
  
 }
 
 void loop(){
-  DateTime now = RTC.now();
+  RTC_Time now;
+  timestamp(&now); 
+  Serial.printf("%04d/%02d/%02d %02d:%02d:%02d\n",
+    now.year, now.month, now.day,
+    now.hour, now.minute, now.second);
 
-  Serial.print(now.year(), DEC);  // 년
+  int sensorValue = analogRead(TURBIDITY); 
 
-  Serial.print('/');
+  float voltage = sensorValue * (5.0 / 1024.0); 
 
-  Serial.print(now.month(), DEC);  // 월
+  Serial.println(voltage);
 
-  Serial.print('/');
+  delay(500);
 
-  Serial.print(now.day(), DEC);   // 일
-
-  Serial.print(' ');
-
-  Serial.print(now.hour(), DEC);    // 시간
-
-  Serial.print(':');
-
-  Serial.print(now.minute(), DEC);   // 분
-
-  Serial.print(':');
-
-  Serial.print(now.second(), DEC);   // 초
-
-  Serial.print(' ');
-
-  Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);   // 요일
-
-  Serial.println();
-
-  delay(1000);
-}
+} 
