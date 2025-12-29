@@ -1,10 +1,10 @@
 #pragma once
 #include <stdint.h>
 
-class SEN0189{
+class Turbidity{
     public:
-        SEN0189(uint8_t pin);
-        float readPPM();
+        Turbidity(uint8_t pin);
+        float get();
     private:
         uint8_t _pin;
 };
