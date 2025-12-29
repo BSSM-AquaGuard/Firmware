@@ -6,6 +6,7 @@ struct DataPacket {
     uint16_t id;
     float_t temperature;
     uint8_t turbidity;
+    uint8_t timestamp;
 };
 
 enum Mode {
