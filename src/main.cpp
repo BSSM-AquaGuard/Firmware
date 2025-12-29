@@ -1,18 +1,18 @@
 #include <Arduino.h>
+#include <OneWire.h>
+#include <DS18B20.h>
 
-// put function declarations here:
-int myFunction(int, int);
+OneWire oneWire(4);
+DS18B20 DS18B20_Sensor(&oneWire);
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(115200);
+  DS18B20_Sensor.begin();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  DS18B20_Sensor.requestTemperatures();
+  float temp = DS18B20_Sensor.getTempC();
+  Serial.println(temp);
+  delay(1000);
 }
