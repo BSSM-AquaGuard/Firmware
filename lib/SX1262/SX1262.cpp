@@ -38,3 +38,10 @@ void SX1262::sendData(const DataPacket& data) {
     Serial.write((uint8_t*)&data, sizeof(DataPacket));
     waitAux();
 }
+bool SX1262::receiveData(DataPacket& out) {
+    if (Serial.available() < sizeof(DataPacket))
+        return false;
+
+    Serial.readBytes((uint8_t*)&out, sizeof(DataPacket));
+    return true;
+}
