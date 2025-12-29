@@ -1,12 +1,13 @@
 #include <Wire.h>
-
+#include "ArduinoJson.h"
+#include <SEN0189.hpp>
 #include <RTClib.h>
 
 RTC_DS1307 RTC;
+SEN0189 turbidity(34);
 
 #define SDA_PATH 21
 #define SCL_PATH 22
-
 char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 void setup () {
@@ -22,8 +23,10 @@ void setup () {
 }
 
 void loop(){
-  DateTime now = RTC.now();
+  Serial.println(turbidity.readPPM()); 
 
+  delay(500);
+  DateTime now = RTC.now();
   Serial.print(now.year(), DEC);  // 년
 
   Serial.print('/');
@@ -52,5 +55,5 @@ void loop(){
 
   Serial.println();
 
-  delay(1000);
-}
+  delay(1000); 
+} 
