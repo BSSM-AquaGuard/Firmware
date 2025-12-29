@@ -4,7 +4,8 @@
 
 struct DataPacket {
     uint16_t id;
-    uint16_t counter;
+    float_t temperature;
+    uint8_t turbidity;
 };
 
 enum Mode {

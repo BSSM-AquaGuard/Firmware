@@ -22,12 +22,10 @@ void setup() {
 void loop() {
     DataPacket packet;
     packet.id = 0x01;
-    packet.counter = cnt++;
 
     sx1262.sendData(packet);
 
-    Serial.print("Sent packet: ");
-    Serial.println(packet.counter);
+    Serial.print("Sent packet");
 
     delay(1000);
 }

@@ -23,7 +23,7 @@ void loop() {
     DataPacket packet;
     if(sx1262.receiveData(packet)) {
         Serial.print("Received packet: ");
-        Serial.println(packet.counter);
+        Serial.println(packet.id);
     }
     delay(1000);
 }
