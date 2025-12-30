@@ -1,4 +1,4 @@
-#include "RTC.h"
+#include "RTC.hpp"
 #include <Wire.h>
 #include <RTClib.h>
 
