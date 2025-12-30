@@ -57,6 +57,4 @@ void setup() {
   );
 }
 
-void loop() {
-  Serial.println(Ph.get());
-}
+void loop() {}

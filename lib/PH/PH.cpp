@@ -4,7 +4,7 @@
 #define ADC_MAX 4095.0
 #define VREF    3.3
 
-PH::PH(uint8_t pin) : _pin(pin) {
+PH::PH(uint8_t pin) : _pin(pin), _a(-5.7), _b(21.25) {
     analogReadResolution(12);   // ESP32
 }
 

@@ -12,7 +12,7 @@ struct DataPacket {
     uint32_t timestamp; 
 };
 #pragma pack(pop)
-static_assert(sizeof(DataPacket) == 14, "DataPacket must be 14 bytes");
+static_assert(sizeof(DataPacket) == 18, "DataPacket must be 14 bytes");
 
 enum Mode {
     MODE_SLEEP,

@@ -14,4 +14,5 @@
 #define SDA_PIN 21
 #define SCL_PIN 22
 
-#define PH_SIG 23
+// pH sensor analog input (use ADC-capable pin)
+#define PH_SIG 32

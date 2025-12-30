@@ -16,6 +16,9 @@ void SensorTask(void* pvParameters) {
     OneWire oneWire(TEMPERATURE_SENSOR_PIN);
     Temperature temperature(oneWire);
     PH potentialofhydrogen(PH_SIG);
+    
+    // 생수 보정: 0.5V에서 pH 7.0 기준
+    potentialofhydrogen.calibrate(-3.5, 8.75);
 
     uint16_t packetId = 0;
 
@@ -24,6 +27,10 @@ void SensorTask(void* pvParameters) {
         float turbidityValue = turbidity.get();
         float temperaturevalue = temperature.getTemperatureC();
         float potentialofhydrogenvalue = potentialofhydrogen.get();
+        
+        // 범위 제한 (0-14)
+        if (potentialofhydrogenvalue < 0) potentialofhydrogenvalue = 0;
+        if (potentialofhydrogenvalue > 14) potentialofhydrogenvalue = 14;
 
         DataPacket packet;
         packet.id = packetId++;
@@ -34,7 +41,11 @@ void SensorTask(void* pvParameters) {
 
         Serial.print("[Sensor] ID: ");
         Serial.print(packet.id);
-        Serial.print(", Temp: ");
+        Serial.print(", pH: ");
+        Serial.print(packet.ph);
+        Serial.print(" (raw V: ");
+        Serial.print((packet.ph - 8.75) / -3.5, 3);
+        Serial.print("), Temp: ");
         Serial.print(packet.temperature);
         Serial.print(" C, Turbidity: ");
         Serial.print(packet.turbidity);
