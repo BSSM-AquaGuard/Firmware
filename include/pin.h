@@ -13,3 +13,5 @@
 // I2C Pins (for RTC)
 #define SDA_PIN 21
 #define SCL_PIN 22
+
+#define PH_SIG 23

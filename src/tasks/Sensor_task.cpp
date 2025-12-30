@@ -4,6 +4,7 @@
 #include "Temperature.hpp"
 #include "Turbidity.hpp"
 #include <RTClib.h>
+#include <PH.hpp>
 
 #include "pin.h"
 
@@ -14,17 +15,19 @@ void SensorTask(void* pvParameters) {
     Turbidity turbidity(TURBIDITY_SENSOR_PIN);
     OneWire oneWire(TEMPERATURE_SENSOR_PIN);
     Temperature temperature(oneWire);
+    PH potentialofhydrogen(PH_SIG);
 
     uint16_t packetId = 0;
 
     for(;;){
         
-
         float turbidityValue = turbidity.get();
         float temperaturevalue = temperature.getTemperatureC();
+        float potentialofhydrogenvalue = potentialofhydrogen.get();
 
         DataPacket packet;
         packet.id = packetId++;
+        packet.ph = potentialofhydrogenvalue;
         packet.temperature = temperaturevalue;
         packet.turbidity = turbidityValue;
         packet.timestamp = getTimestampToUnix(); 

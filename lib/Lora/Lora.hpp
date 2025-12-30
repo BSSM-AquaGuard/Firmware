@@ -6,6 +6,7 @@
 #pragma pack(push, 1)
 struct DataPacket {
     uint16_t id;
+    float ph;
     float temperature;
     float turbidity;
     uint32_t timestamp; 
