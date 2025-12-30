@@ -24,10 +24,10 @@ void SensorTask(void* pvParameters) {
         float temperaturevalue = temperature.getTemperatureC();
 
         DataPacket packet;
-        packet.id = (uint16_t)packetId++;
-        packet.temperature = (float_t)temperaturevalue;
-        packet.turbidity = (float_t)turbidityValue;
-        packet.timestamp = (RTC_Time)current; 
+        packet.id = packetId++;
+        packet.temperature = temperaturevalue;
+        packet.turbidity = turbidityValue;
+        packet.timestamp = current; 
         
         xQueueSend(txQueue, &packet, portMAX_DELAY);
 
