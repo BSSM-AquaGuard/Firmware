@@ -5,20 +5,20 @@
 #include "Turbidity.hpp"
 #include <RTClib.h>
 
-extern Turbidity turbidity;
-extern Temperature temperature;
+#include "pin.h"
 
 void SensorTask(void* pvParameters) {
 
     SensorTaskContext* sensor = static_cast<SensorTaskContext*>(pvParameters);
     QueueHandle_t txQueue = sensor->txQueue;
+    Turbidity turbidity(TURBIDITY_SENSOR_PIN);
+    OneWire oneWire(TEMPERATURE_SENSOR_PIN);
+    Temperature temperature(oneWire);
 
     uint16_t packetId = 0;
 
     for(;;){
         
-        RTC_Time current;
-        getTimestamp(&current);
 
         float turbidityValue = turbidity.get();
         float temperaturevalue = temperature.getTemperatureC();
@@ -27,7 +27,7 @@ void SensorTask(void* pvParameters) {
         packet.id = packetId++;
         packet.temperature = temperaturevalue;
         packet.turbidity = turbidityValue;
-        packet.timestamp = current; 
+        packet.timestamp = getTimestampToUnix(); 
         
         xQueueSend(txQueue, &packet, portMAX_DELAY);
 

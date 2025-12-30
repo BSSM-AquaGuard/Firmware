@@ -1,9 +1,6 @@
 #ifndef RTC_MODULE_H
 #define RTC_MODULE_H
 
-#define SDA_PIN 21
-#define SCL_PIN 22
-
 #include <Arduino.h>
 
 typedef struct{
@@ -16,6 +13,7 @@ typedef struct{
 } RTC_Time;
 
 void getTimestamp(RTC_Time *now);
+uint32_t getTimestampToUnix();
 String getTimestampToString();
 void rtc_init();
 

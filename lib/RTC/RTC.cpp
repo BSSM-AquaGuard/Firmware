@@ -3,11 +3,25 @@
 #include <RTClib.h>
 
 RTC_DS1307 rtc;
+bool rtcAvailable = false;
 
 void rtc_init(){
-    Wire.begin(SDA_PIN, SCL_PIN);
-    rtc.begin();
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    if (!rtc.begin()) {
+        Serial.println("[RTC] Failed to find RTC module!");
+        rtcAvailable = false;
+        return;
+    }
+    
+    Serial.println("[RTC] RTC module found!");
+    
+    if (!rtc.isrunning()) {
+        Serial.println("[RTC] RTC is NOT running, setting time...");
+        rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    } else {
+        Serial.println("[RTC] RTC is already running");
+    }
+    
+    rtcAvailable = true;
 }
 
 void getTimestamp(RTC_Time* now){
@@ -28,4 +42,9 @@ String getTimestampToString(){
         current.year(), current.month(), current.day(),
         current.hour(), current.minute(), current.second());
     return String(buffer);
+}
+
+uint32_t getTimestampToUnix(){
+    DateTime current = rtc.now();
+    return current.unixtime();
 }

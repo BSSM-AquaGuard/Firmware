@@ -7,7 +7,7 @@ struct DataPacket {
     uint16_t id;
     float_t temperature;
     float_t turbidity;
-    RTC_Time timestamp; 
+    uint32_t timestamp; 
 };
 
 enum Mode {
@@ -20,6 +20,7 @@ enum Mode {
 class Lora {
     public:
         Lora(HardwareSerial& serial, uint8_t m0, uint8_t m1, uint8_t aux);
+        void begin();
         void send(const DataPacket& data);
         bool receive(DataPacket& out);
         void setMode(Mode mode);

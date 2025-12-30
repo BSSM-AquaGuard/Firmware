@@ -3,10 +3,12 @@
 
 Lora::Lora(HardwareSerial& serial, uint8_t m0, uint8_t m1, uint8_t aux)
     : _serial(serial), _m0(m0), _m1(m1), _aux(aux) {
-        _serial.begin(9600);
-        pinMode(_m0, OUTPUT);
-        pinMode(_m1, OUTPUT);
-        pinMode(_aux, INPUT_PULLUP);
+        
+}
+void Lora::begin(){
+    pinMode(_m0, OUTPUT);
+    pinMode(_m1, OUTPUT);
+    pinMode(_aux, INPUT_PULLUP);
 }
 void Lora::setMode(Mode mode) {
     switch (mode) {
