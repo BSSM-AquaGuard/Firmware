@@ -1,12 +1,13 @@
 #pragma once
 #include <cstdint>
 #include <HardwareSerial.h>
+#include "RTC.hpp"
 
 struct DataPacket {
     uint16_t id;
     float_t temperature;
-    uint8_t turbidity;
-    uint8_t timestamp;
+    float_t turbidity;
+    RTC_Time timestamp; 
 };
 
 enum Mode {
