@@ -31,6 +31,15 @@ void SensorTask(void* pvParameters) {
         packet.temperature = temperaturevalue;
         packet.turbidity = turbidityValue;
         packet.timestamp = getTimestampToUnix(); 
+
+        Serial.print("[Sensor] ID: ");
+        Serial.print(packet.id);
+        Serial.print(", Temp: ");
+        Serial.print(packet.temperature);
+        Serial.print(" C, Turbidity: ");
+        Serial.print(packet.turbidity);
+        Serial.print(" V, Timestamp: ");
+        Serial.println(packet.timestamp);
         
         xQueueSend(txQueue, &packet, portMAX_DELAY);
 

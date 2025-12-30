@@ -3,13 +3,16 @@
 #include <HardwareSerial.h>
 #include "RTC.hpp"
 
+#pragma pack(push, 1)
 struct DataPacket {
     uint16_t id;
-    float_t ph;
-    float_t temperature;
-    float_t turbidity;
+    float ph;
+    float temperature;
+    float turbidity;
     uint32_t timestamp; 
 };
+#pragma pack(pop)
+static_assert(sizeof(DataPacket) == 14, "DataPacket must be 14 bytes");
 
 enum Mode {
     MODE_SLEEP,
