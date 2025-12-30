@@ -8,17 +8,19 @@
 #include <Lora.hpp>
 #include "pin.h"
 #include "RTC.hpp"
+#include "PH.hpp"
 
 #include "tasks/lora_task.hpp"
-#include "tasks/Sensor_task.hpp"
+#include "tasks/Sensor_task.hpp"  
 
+PH Ph(34);
 QueueHandle_t txQueue;
 LoRaTaskContext loraCtx;
 SensorTaskContext sensorCtx;
 
 Lora lora(Serial2, LORA_M0_PIN, LORA_M1_PIN, LORA_AUX_PIN);
 
-void scanI2C() {
+/* void scanI2C() {
   Serial.println("\n[I2C Scanner] Scanning...");
   
   int nDevices = 0;
@@ -43,18 +45,18 @@ void scanI2C() {
   } else {
     Serial.printf("[I2C Scanner] Found %d device(s)\n", nDevices);
   }
-}
+}*/
 
 void setup() {
   Serial.begin(115200);
-  delay(1000);
+  /*delay(1000);
   
   // Lolin D32: I2C 클럭 속도를 낮춰서 시도
   Wire.begin();
   Wire.setClock(10000);  // 10kHz로 낮춤 (기본 100kHz)
   Serial.printf("[I2C] Using default board pins - SDA=%d, SCL=%d at 10kHz\n", SDA, SCL);
   
-  scanI2C();  // I2C 스캔 먼저 실행
+  // scanI2C();  // I2C 스캔 먼저 실행
   
   Serial2.begin(9600, SERIAL_8N1, LORA_SERIAL_RX_PIN, LORA_SERIAL_TX_PIN);
   
@@ -84,7 +86,9 @@ void setup() {
     1,
     NULL,
     0
-  );
+  );*/
 }
 
-void loop() {}
+void loop() {
+  Serial.println(Ph.get());
+}
