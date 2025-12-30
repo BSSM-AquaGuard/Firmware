@@ -1,21 +1,36 @@
 #include <Arduino.h>
+#include <SPI.h>
 #include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/queue.h>
 
-#include <SX1262.hpp>
+#include <Lora.hpp>
+#include "pin.h"
 
-SX1262 sx1262(Serial2, 15, 2, 26);
+#include "tasks/lora_task.hpp"
+
+QueueHandle_t txQueue;
+LoRaTaskContext loraCtx;
+
+Lora lora(Serial2, LORA_M0_PIN, LORA_M1_PIN, LORA_AUX_PIN);
 
 void setup() {
-    Serial.begin(115200);
-    Serial2.begin(9600, SERIAL_8N1, 16, 17); 
-    sx1262.setMode(MODE_NORMAL);
+  Serial.begin(115200);
+  Serial2.begin(9600, SERIAL_8N1, LORA_SERIAL_RX_PIN, LORA_SERIAL_TX_PIN);
+  
+  txQueue = xQueueCreate(10, sizeof(DataPacket));
+  
+  loraCtx.lora = &lora;
+  loraCtx.txQueue = txQueue;
+  xTaskCreatePinnedToCore(
+    LoRaTxTask,
+    "LoRaTxTask",
+    4096,
+    &loraCtx,
+    1,
+    NULL,
+    1
+  );
 }
 
-void loop() {
-    DataPacket packet;
-    if(sx1262.receiveData(packet)) {
-        Serial.print("Received packet: ");
-        Serial.println(packet.counter);
-    }
-    delay(1000);
-}
+void loop() {}

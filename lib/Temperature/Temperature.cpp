@@ -1,4 +1,5 @@
 #include "Temperature.hpp"
+#include <Arduino.h>
 
 Temperature::Temperature(OneWire wire): _wire(wire), _sensor(&_wire){
     _sensor.begin();

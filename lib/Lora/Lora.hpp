@@ -6,6 +6,7 @@ struct DataPacket {
     uint16_t id;
     float_t temperature;
     uint8_t turbidity;
+    uint8_t timestamp;
 };
 
 enum Mode {
@@ -15,14 +16,14 @@ enum Mode {
     MODE_WAKEUP
 };
 
-class SX1262 {
+class Lora {
     public:
-        SX1262(HardwareSerial& serial, uint8_t m0, uint8_t m1, uint8_t aux);
-        void sendData(const DataPacket& data);
-        bool receiveData(DataPacket& out);
+        Lora(HardwareSerial& serial, uint8_t m0, uint8_t m1, uint8_t aux);
+        void send(const DataPacket& data);
+        bool receive(DataPacket& out);
         void setMode(Mode mode);
     private:
-        HardwareSerial& Serial;
+        HardwareSerial& _serial;
         uint8_t _m0;
         uint8_t _m1;
         uint8_t _aux;
