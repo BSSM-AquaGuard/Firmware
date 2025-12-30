@@ -5,6 +5,7 @@
 
 struct DataPacket {
     uint16_t id;
+    float_t ph;
     float_t temperature;
     float_t turbidity;
     uint32_t timestamp; 
