@@ -22,38 +22,43 @@ void SensorTask(void* pvParameters) {
 
     uint16_t packetId = 0;
 
-    for(;;){
-        
-        float turbidityValue = turbidity.get();
-        float temperaturevalue = temperature.getTemperatureC();
-        float potentialofhydrogenvalue = potentialofhydrogen.get();
-        
-        // 범위 제한 (0-14)
-        if (potentialofhydrogenvalue < 0) potentialofhydrogenvalue = 0;
-        if (potentialofhydrogenvalue > 14) potentialofhydrogenvalue = 14;
+    // 1회만 측정 및 전송 후 deep sleep 진입
+    float turbidityValue = turbidity.get();
+    float temperaturevalue = temperature.getTemperatureC();
+    float potentialofhydrogenvalue = potentialofhydrogen.get();
+    uint8_t redTideStatus = digitalRead(RED_TIDE_PIN) ? 1 : 0;  // 단순 디지털 입력
 
-        DataPacket packet;
-        packet.id = packetId++;
-        packet.ph = potentialofhydrogenvalue;
-        packet.temperature = temperaturevalue;
-        packet.turbidity = turbidityValue;
-        packet.timestamp = getTimestampToUnix(); 
+    // 범위 제한 (0-14)
+    if (potentialofhydrogenvalue < 0) potentialofhydrogenvalue = 0;
+    if (potentialofhydrogenvalue > 14) potentialofhydrogenvalue = 14;
 
-        Serial.print("[Sensor] ID: ");
-        Serial.print(packet.id);
-        Serial.print(", pH: ");
-        Serial.print(packet.ph);
-        Serial.print(" (raw V: ");
-        Serial.print((packet.ph - 8.75) / -3.5, 3);
-        Serial.print("), Temp: ");
-        Serial.print(packet.temperature);
-        Serial.print(" C, Turbidity: ");
-        Serial.print(packet.turbidity);
-        Serial.print(" V, Timestamp: ");
-        Serial.println(packet.timestamp);
-        
-        xQueueSend(txQueue, &packet, portMAX_DELAY);
+    DataPacket packet;
+    packet.id = packetId++;
+    packet.ph = potentialofhydrogenvalue;
+    packet.temperature = temperaturevalue;
+    packet.turbidity = turbidityValue;
+    packet.timestamp = getTimestampToUnix();
+    packet.redTide = redTideStatus; 
 
-        vTaskDelay(pdMS_TO_TICKS(1000));
-    }
+    Serial.print("[Sensor] ID: ");
+    Serial.print(packet.id);
+    Serial.print(", pH: ");
+    Serial.print(packet.ph);
+    Serial.print(" (raw V: ");
+    Serial.print((packet.ph - 8.75) / -3.5, 3);
+    Serial.print("), Temp: ");
+    Serial.print(packet.temperature);
+    Serial.print(" C, Turbidity: ");
+    Serial.print(packet.turbidity);
+    Serial.print(" V, RedTide: ");
+    Serial.print(packet.redTide ? "DETECTED" : "Normal");
+    Serial.print(", Timestamp: ");
+    Serial.println(packet.timestamp);
+
+    xQueueSend(txQueue, &packet, portMAX_DELAY);
+
+    Serial.println("[Sensor] Going to deep sleep for 10 seconds...");
+    vTaskDelay(pdMS_TO_TICKS(1000)); // 전송 후 약간의 여유
+    esp_sleep_enable_timer_wakeup(10ULL * 1000000ULL); // 10초 후 wakeup
+    esp_deep_sleep_start();
 }

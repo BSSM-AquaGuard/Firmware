@@ -9,10 +9,11 @@ struct DataPacket {
     float ph;
     float temperature;
     float turbidity;
-    uint32_t timestamp; 
+    uint32_t timestamp;
+    uint8_t redTide;  // 0: 정상, 1: 적조 감지
 };
 #pragma pack(pop)
-static_assert(sizeof(DataPacket) == 18, "DataPacket must be 14 bytes");
+static_assert(sizeof(DataPacket) == 19, "DataPacket must be 19 bytes");
 
 enum Mode {
     MODE_SLEEP,

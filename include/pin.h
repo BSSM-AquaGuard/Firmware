@@ -16,3 +16,6 @@
 
 // pH sensor analog input (use ADC-capable pin)
 #define PH_SIG 32
+
+// Red tide digital input pin (1: detected, 0: normal)
+#define RED_TIDE_PIN 27
